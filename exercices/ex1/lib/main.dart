@@ -1,3 +1,4 @@
+import 'package:ex1/laureate_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -30,11 +31,10 @@ class HomeScreen extends StatelessWidget {
         title: const Text("Flutter Exercice 1"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: Column(
-        children: [
-          Text(laureate1["motivation"]!),
-          Text("${laureate1["firstname"]} ${laureate1["surname"]}")
-        ],
+      body: LaureateWidget(
+        motivation: laureate1["motivation"]!,
+        firstname: laureate1["firstname"]!,
+        surname: laureate1["surname"]!,
       ),
     );
   }
