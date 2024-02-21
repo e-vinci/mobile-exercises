@@ -14,11 +14,25 @@ class LaureateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(motivation),
-        Text("$firstname $surname")
-      ],
+    return Card(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(motivation, textAlign: TextAlign.justify),
+          ),
+          Card(
+            color: Theme.of(context).colorScheme.inverseSurface,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                "$firstname $surname",
+                style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

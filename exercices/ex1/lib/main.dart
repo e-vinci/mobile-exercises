@@ -1,5 +1,6 @@
-import 'package:ex1/laureate_widget.dart';
 import 'package:flutter/material.dart';
+
+import 'laureate_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Exercice 1',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
       home: const HomeScreen(),
@@ -31,15 +32,21 @@ class HomeScreen extends StatelessWidget {
         title: const Text("Flutter Exercice 1"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
-      body: LaureateWidget(
-        motivation: laureate1["motivation"]!,
-        firstname: laureate1["firstname"]!,
-        surname: laureate1["surname"]!,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            LaureateWidget(
+              motivation: laureate1["motivation"]!,
+              firstname: laureate1["firstname"]!,
+              surname: laureate1["surname"]!,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
 
 const laureate1 = {
   "id": "819",
