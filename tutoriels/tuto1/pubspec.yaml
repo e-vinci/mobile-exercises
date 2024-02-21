@@ -61,7 +61,7 @@ flutter:
   # Déclarez les images ici
   assets:
     - images/iphone.jpg
-
+    - images/cg.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

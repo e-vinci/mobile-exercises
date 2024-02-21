@@ -24,8 +24,28 @@ class MyApp extends StatelessWidget {
         body: const Center(
           child: Column(
             children: [
-              ProductWidget(),
-              ProductWidget(),
+              ProductWidget(
+                name: "iPhone 15 Pro Max",
+                price: 1479,
+                description:
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+                    "Aliquam et risus vel ipsum faucibus ultrices. "
+                    "Fusce nec leo nisi. Vestibulum vehicula, "
+                    "orci ac varius eleifend, ante erat efficitur tortor, "
+                    "quis tincidunt elit ex ut est.",
+                imagePath: "images/iphone.jpg",
+              ),
+              ProductWidget(
+                name: "GeForce RTX 4080 SUPER",
+                price: 1110,
+                description:
+                    "Des jeux ultra-réalistes, ultra-fluides et ultra-immersifs, "
+                    "la carte graphique GeForce RTX 4080 SUPER met à votre "
+                    "disposition les technologies les plus avancées pour "
+                    "vous permettre de jouer dans les meilleures conditions, "
+                    "en très haute résolution ou en Réalité Virtuelle.",
+                imagePath: "images/cg.jpg",
+              ),
             ],
           ),
         ),

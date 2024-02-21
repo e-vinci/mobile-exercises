@@ -1,7 +1,19 @@
 import 'package:flutter/material.dart';
 
 class ProductWidget extends StatelessWidget {
-  const ProductWidget({super.key});
+  final String name;
+  final String description;
+  final int price;
+  final String imagePath;
+
+  const ProductWidget({
+    super.key,
+    required this.name,
+    required this.description,
+    required this.price,
+    required this.imagePath,
+  });
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +29,15 @@ class ProductWidget extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "iPhone 15 Pro Max",
-                        style: TextStyle(
+                      Text(
+                        name,
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       Text(
-                        "1479 €",
+                        "$price €",
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                           fontSize: 16,
@@ -34,19 +46,15 @@ class ProductWidget extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-                        "Aliquam et risus vel ipsum faucibus ultrices. "
-                        "Fusce nec leo nisi. Vestibulum vehicula, "
-                        "orci ac varius eleifend, ante erat efficitur tortor, "
-                        "quis tincidunt elit ex ut est.",
+                  Text(
+                    description,
                     textAlign: TextAlign.justify,
                   ),
                 ],
               ),
             ),
             const SizedBox(width: 16),
-            Image.asset('images/iphone.jpg', width: 150),
+            Image.asset(imagePath, width: 150),
           ],
         ),
       ),
