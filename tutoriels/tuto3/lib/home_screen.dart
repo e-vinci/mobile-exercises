@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'main.dart';
+import 'my_form.dart';
 import 'my_square.dart';
 import 'my_switch.dart';
 
@@ -23,6 +24,7 @@ class HomeScreen extends StatelessWidget {
           children: [
             MySquare(color: color),
             MySwitch(color: color, setColor: setColor),
+            MyForm(setColor),
           ],
         ),
       ),
