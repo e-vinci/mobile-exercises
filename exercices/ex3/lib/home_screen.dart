@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'create_note_form.dart';
 import 'note.dart';
+import 'note_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,17 +17,6 @@ class _HomeScreenState extends State<HomeScreen> {
     const Note("Test", "Bonjour tout le monde!"),
   ];
 
-  final titleController = TextEditingController();
-  final contentController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
-
-  @override
-  void dispose() {
-    titleController.dispose();
-    contentController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,56 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Expanded(
-              child: ListView.separated(
-                separatorBuilder: (context, index) => const Divider(),
-                itemCount: notes.length,
-                itemBuilder: (context, index) => ListTile(
-                  title: Text(notes[index].title),
-                  subtitle: Text(notes[index].content),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => setState(() => notes.removeAt(index)),
-                  ),
-                ),
+              child: NoteList(
+                notes: notes,
+                deleteNote: (note) => setState(() => notes.remove(note)),
               ),
             ),
             const SizedBox(height: 16.0),
-            Form(
-              key: formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: titleController,
-                    decoration: const InputDecoration(labelText: "Note title"),
-                    validator: (value) => (value == null || value == "")
-                        ? "Note title can't be empty"
-                        : null,
-                  ),
-                  TextFormField(
-                    maxLines: null,
-                    controller: contentController,
-                    decoration: const InputDecoration(labelText: "Note content"),
-                    validator: (value) => (value == null || value == "")
-                        ? "Note content can't be empty"
-                        : null,
-                  ),
-                  const SizedBox(height: 8.0),
-                  ElevatedButton(
-                    child: const Text("Create note"),
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        setState(() => notes.add(Note(
-                          titleController.text,
-                          contentController.text,
-                        )));
-                        titleController.text = "";
-                        contentController.text = "";
-                      }
-                    },
-                  )
-                ],
-              ),
-            ),
+            CreateNoteForm(addNote: (note) => setState(() => notes.add(note))),
           ],
         ),
       ),
