@@ -1,3 +1,6 @@
+import 'view_models/article_view_model.dart';
+import 'package:provider/provider.dart';
+
 import 'views/article_screen.dart';
 import 'views/form_screen.dart';
 import 'views/list_screen.dart';
@@ -20,8 +23,10 @@ final GoRouter _router = GoRouter(
         GoRoute(
           path: 'articles/:id',
           builder: (context, state) {
-            // get the article from the extra argument
-            final article = state.extra as Article;
+            final id = state.pathParameters['id']!;
+            final Article? article =
+                Provider.of<ArticleViewModel>(context, listen: false)
+                    .getArticleById(int.parse(id));
             return ArticleScreen(article: article!);
           },
         ),
@@ -31,7 +36,8 @@ final GoRouter _router = GoRouter(
 );
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider<ArticleViewModel>(
+      create: (context) => ArticleViewModel(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

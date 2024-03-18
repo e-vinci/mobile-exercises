@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/article.dart';
+import '../view_models/article_view_model.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({Key? key}) : super(key: key);
+  const FormScreen({super.key});
 
   @override
   State<FormScreen> createState() => _FormScreenState();
@@ -65,7 +69,16 @@ class _FormScreenState extends State<FormScreen> {
                 child: const Text("Create article"),
                 onPressed: () {
                   if (key.currentState!.validate()) {
-                    // TODO F07 create article
+                    Article newArticle = Article(
+                      title: titleController.text,
+                      author: authorController.text,
+                      content: contentController.text,
+                    );
+
+                    Provider.of<ArticleViewModel>(context, listen: false)
+                        .addArticle(newArticle);
+                    // clear form thanks to the form key
+                    key.currentState!.reset();
                   }
                 },
               )

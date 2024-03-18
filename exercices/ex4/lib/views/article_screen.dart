@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../models/article.dart';
+import '../models/article.dart';
+import '../view_models/article_view_model.dart';
 
 class ArticleScreen extends StatelessWidget {
   final Article article;
 
-  const ArticleScreen({Key? key, required this.article}) : super(key: key);
+  const ArticleScreen({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +16,15 @@ class ArticleScreen extends StatelessWidget {
         title: const Text("Article"),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: article.read
-            ? const Icon(Icons.check_box)
-            : const Icon(Icons.check_box_outline_blank),
-        onPressed: () {}, // TODO F07 mark as read
-      ),
+      floatingActionButton:
+          Consumer<ArticleViewModel>(builder: (context, viewModel, child) {
+        return FloatingActionButton(
+          child: article.read
+              ? const Icon(Icons.check_box)
+              : const Icon(Icons.check_box_outline_blank),
+          onPressed: () => viewModel.toggleRead(article),
+        );
+      }),
       body: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
