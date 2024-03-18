@@ -9,7 +9,10 @@ final GoRouter _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const FirstScreen(),
+      builder: (context, state) {
+        final int nbClicks = (state.extra ?? 0) as int;
+        return FirstScreen(nbClicks: nbClicks);
+      },
       routes: [
         GoRoute(
           path: 'secondscreen',
