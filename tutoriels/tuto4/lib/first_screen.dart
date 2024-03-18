@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart';
 
 class FirstScreen extends StatelessWidget {
   final int nbClicks;
@@ -25,9 +25,30 @@ class FirstScreen extends StatelessWidget {
               onPressed: () => context.go("/secondscreen"),
               child: const Text("Go to second screen"),
             ),
+            Expanded(child: UserListView()),
           ],
         ),
       ),
+    );
+  }
+}
+
+class UserListView extends StatelessWidget {
+  final List<String> usernames = ['mcCain123', 'greg123', 'sarah123'];
+
+  UserListView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: usernames.length,
+      itemBuilder: (context, index) {
+        final username = usernames[index];
+        return ListTile(
+          title: Text(username),
+          onTap: () => context.go('/users/$username'),
+        );
+      },
     );
   }
 }
