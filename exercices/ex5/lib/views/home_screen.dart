@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+
+import '../models/ghibli_movie.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,18 +11,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   var message = "Loading, please wait…";
+  final movies = <GhibliMovie>[];
 
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3), () async {
-      setState(() => message = "Loading, any second now…");
       try {
-        final response = await get(Uri.parse(
-            "https://sebstreb.github.io/flutter-fiche-5/ghibli-films"));
-        if (response.statusCode != 200) {
-          throw Exception("Error ${response.statusCode}");
-        }
-        setState(() => message = response.body);
+        setState(() => message = "Loading, any second now…");
+        final response = await GhibliMovie.fetch();
+        setState(() {
+          if (response.isEmpty) message = "No movies found…";
+          movies.addAll(response);
+        });
       } catch (error) {
         setState(() => message = error.toString());
       }
@@ -33,15 +34,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .inversePrimary,
         title: const Text("Studio Ghibli Movies"),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Center(child: SingleChildScrollView(child: Text(message))),
+        child: Center(
+          child: movies.isEmpty
+              ? Text(message)
+              : ListView.separated(
+                  itemCount: movies.length,
+                  itemBuilder: (context, index) =>
+                      Text(movies[index].toString()),
+                  separatorBuilder: (_, __) => const SizedBox(height: 8),
+                ),
+        ),
       ),
     );
   }
