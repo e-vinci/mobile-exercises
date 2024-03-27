@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/ghibli_movie.dart';
+import 'movie_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
               : ListView.separated(
                   itemCount: movies.length,
                   itemBuilder: (context, index) =>
-                      Text(movies[index].toString()),
+                      MovieWidget(movie: movies[index]),
                   separatorBuilder: (_, __) => const SizedBox(height: 8),
                 ),
         ),
