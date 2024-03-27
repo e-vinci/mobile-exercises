@@ -14,7 +14,8 @@ class MovieWidget extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Row(
           children: [
-            Image.network(movie.image, width: 200),
+            if (MediaQuery.of(context).size.width > 960)
+              Image.network(movie.image, width: 200),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
@@ -38,16 +39,19 @@ class MovieWidget extends StatelessWidget {
                           : Colors.red,
                     ),
                   ),
-                  const Divider(),
-                  Text("${movie.runningTime} minutes"),
-                  const Divider(),
-                  Text("Directed by ${movie.director}"),
-                  const Divider(),
-                  Text(
-                    movie.description,
-                    textAlign: TextAlign.justify,
-                    softWrap: true,
-                  )
+                  if (MediaQuery.of(context).size.width > 480) const Divider(),
+                  if (MediaQuery.of(context).size.width > 480)
+                    Text("${movie.runningTime} minutes"),
+                  if (MediaQuery.of(context).size.width > 480) const Divider(),
+                  if (MediaQuery.of(context).size.width > 480)
+                    Text("Directed by ${movie.director}"),
+                  if (MediaQuery.of(context).size.width > 480) const Divider(),
+                  if (MediaQuery.of(context).size.width > 480)
+                    Text(
+                      movie.description,
+                      textAlign: TextAlign.justify,
+                      softWrap: true,
+                    )
                 ],
               ),
             )
