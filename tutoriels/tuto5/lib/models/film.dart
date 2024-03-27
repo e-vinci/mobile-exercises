@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class Film {
@@ -34,4 +35,18 @@ class Film {
 
     return Film.fromJson(jsonDecode(response.body));
   }
+
+  static Future<List<Film>> fetchFilms() async {
+    var response = await http.get(Uri.parse("$baseUrl/"));
+
+    if (response.statusCode != 200) {
+      throw Exception("Error ${response.statusCode} fetching movies");
+    }
+
+    return compute((input) {
+      final jsonList = jsonDecode(input);
+      return jsonList.map<Film>((jsonObj) => Film.fromJson(jsonObj)).toList();
+    }, response.body);
+  }
+
 }
