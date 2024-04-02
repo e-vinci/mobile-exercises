@@ -26,4 +26,15 @@ class PhotoViewModel extends ChangeNotifier {
       rethrow;
     }
   }
+
+  Future<void> addPhoto(Photo photo) async {
+    try {
+      await _repository.addPhoto(photo);
+      notifyListeners();
+    } catch (e) {
+      _errorMessage = e.toString();
+      notifyListeners();
+      rethrow;
+    }
+  }
 }

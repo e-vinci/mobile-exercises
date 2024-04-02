@@ -17,6 +17,7 @@ class PhotoGalleryScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       ),
       body: Container(
+        padding: const EdgeInsets.all(16),
         child: Consumer<PhotoViewModel>(
           builder: (context, photoViewModel, child) {
             return FutureBuilder<List<Photo>>(
@@ -48,6 +49,11 @@ class PhotoGalleryScreen extends StatelessWidget {
             );
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.go('/photos/add'),
+        tooltip: 'Add photo',
+        child: const Icon(Icons.add),
       ),
     );
   }
