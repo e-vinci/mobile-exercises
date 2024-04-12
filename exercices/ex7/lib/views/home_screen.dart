@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'update_message_dialog.dart';
 
@@ -23,6 +24,11 @@ class HomeScreen extends StatelessWidget {
                   builder: (context) => const UpdateMessageDialog(),
                 ),
                 child: const Text("Change SOS message"),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => context.go("/recipients"),
+                child: const Text("Manage SOS recipients"),
               ),
             ],
           ),
