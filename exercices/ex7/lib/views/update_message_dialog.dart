@@ -21,32 +21,34 @@ class _UpdateMessageDialogState extends State<UpdateMessageDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<SosViewModel>(context, listen: false);
-    messageController.text = viewModel.message;
-
-    return AlertDialog(
-      title: const Text("Update SOS message"),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Text(
-              "Write your new SOS message. You can fill your actual location using @loc."),
-          TextFormField(controller: messageController, maxLines: null),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            viewModel.message = messageController.text;
-            Navigator.pop(context);
-          },
-          child: const Text("Save"),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text("Dismiss"),
-        ),
-      ],
+    return Consumer<SosViewModel>(
+      builder: (context, viewModel, child) {
+        messageController.text = viewModel.message;
+        return AlertDialog(
+          title: const Text("Update SOS message"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                  "Write your new SOS message. You can fill your actual location using @loc."),
+              TextFormField(controller: messageController, maxLines: null),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                viewModel.message = messageController.text;
+                Navigator.pop(context);
+              },
+              child: const Text("Save"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Dismiss"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
