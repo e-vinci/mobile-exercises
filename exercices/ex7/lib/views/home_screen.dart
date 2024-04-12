@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 import 'package:go_router/go_router.dart';
+import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
 import '../view_models/sos_view_model.dart';
@@ -8,6 +9,29 @@ import 'update_message_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  Future<String?> getLocation() async {
+    Location location = Location();
+
+    var serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return null;
+      }
+    }
+
+    var permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return null;
+      }
+    }
+
+    final locationData = await location.getLocation();
+    return "(${locationData.latitude}, ${locationData.longitude})";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +56,17 @@ class HomeScreen extends StatelessWidget {
                       final viewModel =
                       Provider.of<SosViewModel>(context, listen: false);
                       if (viewModel.canSendSms) {
+                        var message = viewModel.message;
+
+                        if (message.contains("@loc")) {
+                          final location = await getLocation();
+                          if (location != null) {
+                            message = message.replaceAll("@loc", location);
+                          }
+                        }
+
                         await sendSMS(
-                          message: viewModel.message,
+                          message: message,
                           recipients: viewModel.recipients,
                         );
                       } else {
