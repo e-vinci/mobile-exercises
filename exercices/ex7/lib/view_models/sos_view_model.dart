@@ -1,10 +1,13 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 
 class SosViewModel extends ChangeNotifier {
   var _message = "I'm having an emergency at @loc, send help!";
   final _recipients = <String>[];
+
+  final canSendSms = kIsWeb || Platform.isIOS || Platform.isAndroid;
 
   String get message => _message;
 
