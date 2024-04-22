@@ -51,6 +51,16 @@ class VideoViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> resumePreview() async {
+    await _controller?.resumePreview();
+    notifyListeners();
+  }
+
+  Future<void> pausePreview() async {
+    await _controller?.pausePreview();
+    notifyListeners();
+  }
+
   @override
   void dispose() {
     super.dispose();

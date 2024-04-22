@@ -26,44 +26,70 @@ class TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return // You must wait until the controller is initialized before displaying the
-// camera preview.
+    return Consumer<VideoViewModel>(builder: (context, viewModel, child) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Take a picture : )'),
+          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        ),
+        body: viewModel.cameraController == null || viewModel.isInitializing
+            ? const Center(child: CircularProgressIndicator())
+            : Column(
+                children: [
+                  CameraPreview(viewModel.cameraController!),
+                  // Deal with a paused preview.
+                  IconButton(
+                      icon: viewModel.cameraController!.value.isPreviewPaused
+                          ? const Icon(Icons.play_arrow)
+                          : const Icon(Icons.pause_presentation),
+                      color: viewModel.cameraController!.value.isPreviewPaused
+                          ? Colors.green
+                          : Colors.red,
+                      onPressed: () async {
+                        if (!viewModel.cameraController!.value.isInitialized) {
+                          var showSnackBar = ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('Error: select a camera first.'),
+                          ));
 
-        Scaffold(
-      appBar: AppBar(
-        title: Text('Take a picture : )'),
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      ),
-      body: Consumer<VideoViewModel>(builder: (context, viewModel, child) {
-        if (viewModel.cameraController == null || viewModel.isInitializing) {
-          return const Center(child: CircularProgressIndicator());
-        }
+                          return;
+                        }
 
-        return CameraPreview(viewModel.cameraController!);
-      }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          try {
-            // Ensure that the camera is initialized.
-            if (Provider.of<VideoViewModel>(context, listen: false)
-                        .cameraController ==
-                    null ||
-                Provider.of<VideoViewModel>(context, listen: false)
-                    .isInitializing) {
-              return;
-            }
-            // Take a picture and save the image in the viewmodel.
-            await Provider.of<VideoViewModel>(context, listen: false)
-                .takePicture();
+                        if (viewModel.cameraController!.value.isPreviewPaused) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('The preview is resumed.'),
+                          ));
+                          await viewModel.resumePreview();
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            content: Text('The preview is paused.'),
+                          ));
+                          await viewModel.pausePreview();
+                        }
+                      }),
+                ],
+              ),
+        floatingActionButton: viewModel.cameraController == null ||
+                viewModel.cameraController!.value.isPreviewPaused
+            ? null
+            : FloatingActionButton(
+                onPressed: () async {
+                  try {
+                    // Take a picture and save the image in the viewmodel.
+                    await Provider.of<VideoViewModel>(context, listen: false)
+                        .takePicture();
 
-            // If the picture was taken, display it on a new screen.
-            context.go('/display'); // , extra: image.path);
-          } catch (e) {
-            log(e.toString(), name: 'TakePictureScreen');
-          }
-        },
-        child: const Icon(Icons.camera_alt),
-      ),
-    );
+                    // If the picture was taken, display it on a new screen.
+                    context.go('/display'); // , extra: image.path);
+                  } catch (e) {
+                    log(e.toString(), name: 'TakePictureScreen');
+                  }
+                },
+                child: const Icon(Icons.camera_alt),
+              ),
+      );
+    });
   }
 }

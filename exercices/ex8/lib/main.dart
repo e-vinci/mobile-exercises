@@ -15,11 +15,22 @@ final GoRouter _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => TakePictureScreen(),
+      builder: (context, state) => TakePictureScreen() /*{
+        return Consumer<VideoViewModel>(builder: (context, viewModel, child) {
+          final selectedCamera = viewModel.selectedCamera;
+          log("Selected camera : $selectedCamera", name: "main");
+          if (selectedCamera == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return TakePictureScreen() ;//camera: selectedCamera);
+        });
+      }*/,
       routes: [
         GoRoute(
           path: 'display',
           builder: (context, state) {
+            // get the image path from the extra parameter
+            // final String imagePath = state.extra as String;
             return DisplayPictureScreen();
           },
         ),
