@@ -12,6 +12,8 @@ class VideoViewModel extends ChangeNotifier {
   bool _isInitializing = false;
   XFile? _image;
   final List<File> photoGallery = [];
+  List<CameraDescription> _cameras = [];
+  List<CameraDescription> get cameras  => _cameras;
 
   CameraDescription? get selectedCamera => _selectedCamera;
 
@@ -33,16 +35,16 @@ class VideoViewModel extends ChangeNotifier {
       notifyListeners(); // This will allow for a loading spinner to be displayed
 
       // Obtain a list of the available cameras on the device.
-      final cameras = await availableCameras();
+      _cameras = await availableCameras();
 
       // Get a specific camera from the list of available cameras.
-      log("Number of cameras : ${cameras.length}", name: "VideoViewModel");
-      log("Cameras : $cameras", name: "VideoViewModel");
-      _selectedCamera = cameras.first;
+      log("Number of cameras : ${_cameras.length}", name: "VideoViewModel");
+      log("Cameras : $_cameras", name: "VideoViewModel");
+      _selectedCamera = _cameras.first;
 
       _controller = CameraController(
         // Get a specific camera from the list of available cameras.
-        cameras.first,
+        _cameras.first,
         ResolutionPreset.medium,
       );
 
@@ -97,4 +99,15 @@ class VideoViewModel extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  Future<void> changeCamera(CameraDescription cameraDescription) async {
+    _selectedCamera = cameraDescription;
+    _controller = CameraController(
+      cameraDescription,
+      ResolutionPreset.medium,
+    );
+    await _controller?.initialize();
+    notifyListeners();
+  }
+
 }

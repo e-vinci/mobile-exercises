@@ -77,6 +77,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                           await viewModel.pausePreview();
                         }
                       }),
+                  CameraSelector(cameras: viewModel.cameras),
                 ],
               ),
         floatingActionButton: viewModel.cameraController == null ||
@@ -99,5 +100,38 @@ class TakePictureScreenState extends State<TakePictureScreen> {
               ),
       );
     });
+  }
+}
+
+class CameraSelector extends StatelessWidget {
+  final List<CameraDescription> cameras;
+
+  const CameraSelector({super.key, required this.cameras});
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<CameraDescription>(
+      value: Provider.of<VideoViewModel>(context, listen: false).selectedCamera,
+      icon: const Icon(Icons.arrow_downward),
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (CameraDescription? value) {
+        if (value == null) return;
+        Provider.of<VideoViewModel>(context, listen: false).changeCamera(value);
+
+        print("New selection : ${value.name}");
+      },
+      items: cameras
+          .map<DropdownMenuItem<CameraDescription>>((CameraDescription value) {
+        return DropdownMenuItem<CameraDescription>(
+          value: value,
+          child: Text(value.name),
+        );
+      }).toList(),
+    );
   }
 }
