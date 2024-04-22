@@ -1,19 +1,23 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:path_provider/path_provider.dart';
 
 class VideoViewModel extends ChangeNotifier {
   CameraDescription? _selectedCamera;
 
   CameraController? _controller;
   bool _isInitializing = false;
-  String? _imagePath;
   XFile? _image;
+  final List<File> photoGallery = [];
 
   CameraDescription? get selectedCamera => _selectedCamera;
-  String get imagePath => _imagePath ?? "";
+
   XFile? get image => _image;
+
+  set image(XFile? value) => _image = value;
 
   bool get isInitializing => _isInitializing;
 
@@ -72,10 +76,25 @@ class VideoViewModel extends ChangeNotifier {
   Future<void> takePicture() async {
     try {
       _image = await _controller?.takePicture();
-      _imagePath = _image?.path;
-      log("Image path : $_imagePath", name: "VideoViewModel");
     } catch (e) {
       log("Exception : $e", name: "VideoViewModel");
     }
+  }
+
+  Future<void> loadPhotos() async {
+    final Directory? appDir = await getExternalStorageDirectory();
+
+    final appFiles = appDir!.listSync();
+    log("ALL FILES : $appFiles", name: "VideoViewModel");
+
+    photoGallery.clear();
+
+    for (final FileSystemEntity file in appFiles) {
+      if (file is File && file.path.toLowerCase().contains('.jpg')) {
+        photoGallery.add(file);
+        log("photo: ${file.path}", name: "VideoViewModel");
+      }
+    }
+    notifyListeners();
   }
 }

@@ -13,10 +13,8 @@ class DisplayPictureScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String imagePath =
-        Provider.of<VideoViewModel>(context, listen: false).imagePath;
     final image = Provider.of<VideoViewModel>(context, listen: false).image;
-
+    final imagePath = image?.path ?? "";
     log("Image path : $imagePath", name: "main");
     return Scaffold(
       appBar: AppBar(
@@ -36,6 +34,10 @@ class DisplayPictureScreen extends StatelessWidget {
             name: filePath,
             bytes: imageToBeSaved!,
           );
+
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text('File saved at $filePath'),
+          ));
 
           log("File saved at $filePath", name: "DisplayPictureScreen");
         },

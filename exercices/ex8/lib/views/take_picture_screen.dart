@@ -31,6 +31,14 @@ class TakePictureScreenState extends State<TakePictureScreen> {
         appBar: AppBar(
           title: Text('Take a picture : )'),
           backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.photo_album),
+              onPressed: () {
+                context.go('/display-gallery');
+              },
+            ),
+          ],
         ),
         body: viewModel.cameraController == null || viewModel.isInitializing
             ? const Center(child: CircularProgressIndicator())
@@ -82,7 +90,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
                         .takePicture();
 
                     // If the picture was taken, display it on a new screen.
-                    context.go('/display'); // , extra: image.path);
+                    context.go('/display-picture'); // , extra: image.path);
                   } catch (e) {
                     log(e.toString(), name: 'TakePictureScreen');
                   }

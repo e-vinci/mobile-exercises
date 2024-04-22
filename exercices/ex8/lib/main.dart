@@ -1,3 +1,4 @@
+import 'package:ex8/views/display_all_pictures_screen.dart';
 
 import 'view_models/video_view_model.dart';
 import 'views/display_picture_screen.dart';
@@ -14,9 +15,15 @@ final GoRouter _router = GoRouter(
       builder: (context, state) => TakePictureScreen(),
       routes: [
         GoRoute(
-          path: 'display',
+          path: 'display-picture',
           builder: (context, state) {
             return DisplayPictureScreen();
+          },
+        ),
+        GoRoute(
+          path: 'display-gallery',
+          builder: (context, state) {
+            return const DisplayAllPicturesScreen();
           },
         ),
       ],

@@ -39,6 +39,7 @@ dependencies:
   provider: ^6.1.2
   camera: ^0.10.5+9
   file_saver: ^0.2.12
+  file_picker: ^8.0.2
 
 dev_dependencies:
   flutter_test:
