@@ -9,9 +9,11 @@ class VideoViewModel extends ChangeNotifier {
   CameraController? _controller;
   bool _isInitializing = false;
   String? _imagePath;
+  XFile? _image;
 
   CameraDescription? get selectedCamera => _selectedCamera;
   String get imagePath => _imagePath ?? "";
+  XFile? get image => _image;
 
   bool get isInitializing => _isInitializing;
 
@@ -69,8 +71,8 @@ class VideoViewModel extends ChangeNotifier {
 
   Future<void> takePicture() async {
     try {
-      final imageFile = await _controller?.takePicture();
-      _imagePath = imageFile?.path;
+      _image = await _controller?.takePicture();
+      _imagePath = _image?.path;
       log("Image path : $_imagePath", name: "VideoViewModel");
     } catch (e) {
       log("Exception : $e", name: "VideoViewModel");
